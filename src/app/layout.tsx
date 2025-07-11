@@ -94,8 +94,9 @@ export default function RootLayout({
         className={`${ubuntu.variable} ${suwannaphum.variable} antialiased`}
       >
         <ErrorBoundary errorComponent={Error}>
-          <NavbarWrapper />
+          
           <Suspense fallback={<Loading />}>
+          <NavbarWrapper />
             {children}
           </Suspense>
         </ErrorBoundary>

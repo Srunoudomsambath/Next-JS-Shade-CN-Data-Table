@@ -4,11 +4,9 @@ import NavbarComponent from "./NavbarComponent";
 
 export default function NavbarWrapper() {
     const pathname = usePathname();
+    const hiddenPaths = ['/dashboard', '/home', '/blog-dashboard'];
+     const shouldHideNavbar = hiddenPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`));
+    if (shouldHideNavbar) return null;
 
-    if (pathname === '/dashboard' || '/home') {
-        return null; // Do not render NavbarComponent for admin routes
-    }
-    return (
-        <NavbarComponent />
-    );
+    return <NavbarComponent />;
 }
