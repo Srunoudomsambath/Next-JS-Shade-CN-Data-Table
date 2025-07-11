@@ -1,6 +1,7 @@
 'use client'
 
 import { UserType } from '@/types/userType';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import { TableColumn } from 'react-data-table-component';
@@ -13,6 +14,7 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [filteredUsers, setFilteredUsers] = useState<UserType[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -46,17 +48,32 @@ export default function Dashboard() {
     // Handle edit/delete
     const handleEdit = (id: string) => {
         console.log('Edit user:', id);
-        // Navigate or open modal...
+        router.push(`/admin/users/edit/${id}`);
     };
 
-    const handleDelete = (id: string) => {
-        console.log('Delete user:', id);
-        // Show confirmation or delete logic...
+    const handleDelete = async (id: string) => {
+        const confirmDelete = confirm('Are you sure you want to delete this user?');
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}users/${id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) throw new Error('Failed to delete user');
+
+            // Remove user from state
+            setUser((prev) => prev.filter((user) => String(user.id) !== id));
+            setFilteredUsers((prev) => prev.filter((user) => String(user.id) !== id));
+            alert('User deleted successfully!');
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('Failed to delete user.');
+        }
     };
 
     const handleUserDetail = (id: string) => {
         console.log('Delete user:', id);
-        // Show confirmation or delete logic...
+        router.push(`/admin/users/detail/${id}`);
     };
 
     const columns: TableColumn<UserType>[] = [
@@ -73,30 +90,30 @@ export default function Dashboard() {
         },
         {
             name: 'Gender',
-            selector: (row: UserType) => row.gender,
+            selector: (row: UserType) => row.gender ?? '',
         },
         {
             name: 'Date of Birth',
-            selector: (row: UserType) => row.birthDate,
+            selector: (row: UserType) => row.birthDate ?? '',
         },
         {
             name: 'Actions',
             cell: (row) => (
                 <div className="flex gap-2">
                     <button
-                        onClick={() => handleEdit(row.id)}
+                        onClick={() => handleEdit(String(row.id))}
                         className="px-3 py-1 text-sm text-blue-500  rounded hover:text-blue-600"
                     >
                         <FaRegEdit className=' w-[20px] h-[20px]' />
                     </button>
                     <button
-                        onClick={() => handleDelete(row.id)}
+                        onClick={() => handleDelete(String(row.id))}
                         className="px-3 py-1 text-sm text-red-500 rounded hover:text-red-600"
                     >
                         <MdDeleteOutline className='w-[20px] h-[20px]' />
                     </button>
                     <button
-                        onClick={() => handleUserDetail(row.id)}
+                        onClick={() => handleUserDetail(String(row.id))}
                         className="px-3 py-1 text-sm text-gray-300 rounded hover:text-gray-400"
                     >
                         <HiOutlineDotsHorizontal className='w-[20px] h-[20px]' />
