@@ -6,6 +6,8 @@ export type UserType = {
     email: string;
     image: string;
     age: number;
+    gender: string;
+    birthDate: string;
 }
 
 export type UserDetailType = {

@@ -5,7 +5,7 @@ import NavbarComponent from "./NavbarComponent";
 export default function NavbarWrapper() {
     const pathname = usePathname();
 
-    if (pathname === '/dashboard') {
+    if (pathname === '/dashboard' || '/home') {
         return null; // Do not render NavbarComponent for admin routes
     }
     return (
