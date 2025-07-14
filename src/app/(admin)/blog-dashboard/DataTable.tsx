@@ -69,6 +69,7 @@ export default function BlogTable<TData, TValue>({
 
     return (
         <div className="rounded-md border">
+
              <div className="flex items-center py-4 px-4">
         <Input
           placeholder="Filter title..."
@@ -149,7 +150,12 @@ export default function BlogTable<TData, TValue>({
                     )}
                 </TableBody>
             </Table>
+            
             <div className="flex items-center justify-end space-x-3 py-4 px-4">
+                    <div className="text-muted-foreground flex-1 text-sm">
+  {table.getFilteredSelectedRowModel().rows.length} of{" "}
+  {table.getFilteredRowModel().rows.length} row(s) selected.
+</div>
                 <Button
                     variant="outline"
                     size="sm"
@@ -167,6 +173,7 @@ export default function BlogTable<TData, TValue>({
                     Next
                 </Button>
             </div>
+            
         </div>
     )
 }
