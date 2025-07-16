@@ -50,7 +50,7 @@ export default function NavbarComponent() {
 
                     {/* <!-- Desktop Button --> */}
                     <div className="hidden md:block">
-                        <a href="#" className="bg-white text-indigo-700 px-4 py-2 rounded-xl hover:bg-yellow-300 transition-all font-semibold">
+                        <a href="/register" className="bg-white text-indigo-700 px-4 py-2 rounded-xl hover:bg-yellow-300 transition-all font-semibold">
                             Get Started
                         </a>
                     </div>
